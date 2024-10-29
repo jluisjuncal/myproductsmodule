@@ -1,0 +1,22 @@
+ModuleMyProductsModuleName = Análisis de Productos
+ModuleMyProductsModuleDesc = Módulo de análisis y reportes avanzados de productos
+
+ProductAnalysis = Análisis de Productos
+TopSellingProducts = Productos Más Vendidos
+LowStockProducts = Productos con Bajo Stock
+ProductMargins = Márgenes de Productos
+QuantitySold = Cantidad Vendida
+CurrentStock = Stock Actual
+AlertThreshold = Umbral de Alerta
+SellingPrice = Precio de Venta
+CostPrice = Precio de Coste
+Margin = Margen
+ProductAnalysisDashboard = Panel de Análisis de Productos
+Top5SellingProducts = Top 5 Productos Más Vendidos
+LowStockAlerts = Alertas de Bajo Stock
+Filter = Filtrar
+All = Todos
+OnSell = En Venta
+NotOnSell = No en Venta
+Category = Categoría
+Status = Estado

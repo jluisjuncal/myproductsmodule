@@ -1,0 +1,22 @@
+ModuleMyProductsModuleName = Product Analysis
+ModuleMyProductsModuleDesc = Advanced product analysis and reporting module
+
+ProductAnalysis = Product Analysis
+TopSellingProducts = Top Selling Products
+LowStockProducts = Low Stock Products
+ProductMargins = Product Margins
+QuantitySold = Quantity Sold
+CurrentStock = Current Stock
+AlertThreshold = Alert Threshold
+SellingPrice = Selling Price
+CostPrice = Cost Price
+Margin = Margin
+ProductAnalysisDashboard = Product Analysis Dashboard
+Top5SellingProducts = Top 5 Selling Products
+LowStockAlerts = Low Stock Alerts
+Filter = Filter
+All = All
+OnSell = On Sale
+NotOnSell = Not On Sale
+Category = Category
+Status = Status
