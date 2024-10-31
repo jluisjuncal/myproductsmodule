@@ -36,12 +36,12 @@ print '<tr class="liste_titre">';
 print '<td colspan="3">'.$langs->trans("Top5SellingProducts").'</td>';
 print '</tr>';
 
-$sql = "SELECT p.ref, p.label, SUM(fd.qty) as total_qty ";
+$sql = "SELECT p.ref, p.label, COALESCE(SUM(fd.qty), 0) as total_qty ";
 $sql.= "FROM ".MAIN_DB_PREFIX."product as p ";
 $sql.= "LEFT JOIN ".MAIN_DB_PREFIX."facturedet as fd ON fd.fk_product = p.rowid ";
 $sql.= "LEFT JOIN ".MAIN_DB_PREFIX."facture as f ON f.rowid = fd.fk_facture ";
-$sql.= "WHERE f.datef >= DATE_SUB(NOW(), INTERVAL 30 DAY) ";
-$sql.= "GROUP BY p.rowid ";
+$sql.= "WHERE p.tosell = 1 ";
+$sql.= "GROUP BY p.rowid, p.ref, p.label ";
 $sql.= "ORDER BY total_qty DESC ";
 $sql.= "LIMIT 5";
 

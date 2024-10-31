@@ -16,7 +16,7 @@ class modMyProductsModule extends DolibarrModules
         $this->description = "Custom Products Analysis Module";
         $this->descriptionlong = "Module for advanced product analysis and reporting";
         $this->editor_name = 'Your Company';
-        $this->version = '0.4';
+        $this->version = '0.5';
         $this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
         $this->picto = 'product';
         
@@ -41,7 +41,7 @@ class modMyProductsModule extends DolibarrModules
             'fk_menu'  => 'fk_mainmenu=products,fk_leftmenu=myproductsmodule',
             'type'     => 'left',
             'titre'    => 'TopSellingProducts',
-            'url'      => '/myproductsmodule/top_selling.php',
+            'url'      => '/myproductsmodule/include/top_selling.php',
             'langs'    => 'myproductsmodule@myproductsmodule',
             'position' => 101,
             'enabled'  => '1',
@@ -54,7 +54,7 @@ class modMyProductsModule extends DolibarrModules
             'fk_menu'  => 'fk_mainmenu=products,fk_leftmenu=myproductsmodule',
             'type'     => 'left',
             'titre'    => 'LowStockProducts',
-            'url'      => '/myproductsmodule/low_stock.php',
+            'url'      => '/myproductsmodule/include/low_stock.php',
             'langs'    => 'myproductsmodule@myproductsmodule',
             'position' => 102,
             'enabled'  => '1',
@@ -67,7 +67,7 @@ class modMyProductsModule extends DolibarrModules
             'fk_menu'  => 'fk_mainmenu=products,fk_leftmenu=myproductsmodule',
             'type'     => 'left',
             'titre'    => 'ProductMargins',
-            'url'      => '/myproductsmodule/margins.php',
+            'url'      => '/myproductsmodule/include/margins.php',
             'langs'    => 'myproductsmodule@myproductsmodule',
             'position' => 103,
             'enabled'  => '1',
