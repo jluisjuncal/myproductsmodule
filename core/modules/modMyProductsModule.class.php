@@ -13,10 +13,10 @@ class modMyProductsModule extends DolibarrModules
         $this->family = "products";
         $this->module_position = '50';
         $this->name = preg_replace('/^mod/i', '', get_class($this));
-        $this->description = "Custom Products Analysis Module";
-        $this->descriptionlong = "Module for advanced product analysis and reporting";
+        $this->description = "ModuleMyProductsModuleName";
+        $this->descriptionlong = "ModuleMyProductsModuleDesc";
         $this->editor_name = 'Your Company';
-        $this->version = '0.5';
+        $this->version = '0.6';
         $this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
         $this->picto = 'product';
         

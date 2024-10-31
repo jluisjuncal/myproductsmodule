@@ -33,7 +33,9 @@ print '<div class="fichethirdleft">';
 print '<div class="div-table-responsive-no-min">';
 print '<table class="noborder centpercent">';
 print '<tr class="liste_titre">';
-print '<td colspan="3">'.$langs->trans("Top5SellingProducts").'</td>';
+print '<td>'.$langs->trans("Ref").'</td>';
+print '<td>'.$langs->trans("Label").'</td>';
+print '<td class="right">'.$langs->trans("QuantitySold").'</td>';
 print '</tr>';
 
 $sql = "SELECT p.ref, p.label, COALESCE(SUM(fd.qty), 0) as total_qty ";
@@ -65,7 +67,10 @@ print '<div class="fichetwothirdright">';
 print '<div class="div-table-responsive-no-min">';
 print '<table class="noborder centpercent">';
 print '<tr class="liste_titre">';
-print '<td colspan="4">'.$langs->trans("LowStockAlerts").'</td>';
+print '<td>'.$langs->trans("Ref").'</td>';
+print '<td>'.$langs->trans("Label").'</td>';
+print '<td class="right">'.$langs->trans("CurrentStock").'</td>';
+print '<td class="right">'.$langs->trans("AlertThreshold").'</td>';
 print '</tr>';
 
 $sql = "SELECT p.ref, p.label, p.stock, p.seuil_stock_alerte ";

@@ -15,9 +15,12 @@ $sortfield = GETPOST('sortfield', 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
 $category = GETPOST('category', 'int');
 $status = GETPOST('status', 'int');
+$date_start = GETPOST('date_start', 'alpha');
+$date_end = GETPOST('date_end', 'alpha');
 
 if (!$sortfield) $sortfield = 'total_qty';
 if (!$sortorder) $sortorder = 'DESC';
+if (!$date_end) $date_end = dol_print_date(dol_now(), '%Y-%m-%d');
 
 $title = $langs->trans("TopSellingProducts");
 
@@ -33,8 +36,14 @@ print '<input type="hidden" name="sortorder" value="'.$sortorder.'">';
 
 print '<div class="inline-block marginbottomonly">';
 
+// Date range
+print $langs->trans("DateStart"). ': ';
+print $form->selectDate($date_start, 'date_start', 0, 0, 1, '', 1, 0);
+print ' '.$langs->trans("DateEnd"). ': ';
+print $form->selectDate($date_end, 'date_end', 0, 0, 1, '', 1, 0);
+
 // Status filter
-print $langs->trans("Status"). ': ';
+print ' '.$langs->trans("Status"). ': ';
 print '<select class="flat" name="status">';
 print '<option value="-1"'.($status == -1 ? ' selected' : '').'>'.$langs->trans("All").'</option>';
 print '<option value="1"'.($status == 1 ? ' selected' : '').'>'.$langs->trans("OnSell").'</option>';
@@ -78,6 +87,12 @@ if ($status >= 0) {
 }
 if ($category > 0) {
     $sql.= "AND cp.fk_categorie = " . $category . " ";
+}
+if ($date_start) {
+    $sql.= "AND f.datef >= '".$db->idate($date_start)."' ";
+}
+if ($date_end) {
+    $sql.= "AND f.datef <= '".$db->idate($date_end)."' ";
 }
 
 $sql.= "GROUP BY p.rowid, p.ref, p.label, p.description, p.tosell ";
