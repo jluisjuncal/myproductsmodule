@@ -8,15 +8,15 @@ class modMyProductsModule extends DolibarrModules
         global $langs, $conf;
 
         $this->db = $db;
-        $this->numero = 500000;
+        $this->numero = 502300;
         $this->rights_class = 'myproductsmodule';
         $this->family = "products";
         $this->module_position = '50';
         $this->name = preg_replace('/^mod/i', '', get_class($this));
-        $this->description = "ModuleMyProductsModuleName";
-        $this->descriptionlong = "ModuleMyProductsModuleDesc";
-        $this->editor_name = 'Your Company';
-        $this->version = '0.6';
+        $this->description = "Análisis de Productos";
+        $this->descriptionlong = "Módulo de análisis y reportes avanzados de productos";
+        $this->editor_name = 'jluisjuncal';
+        $this->version = '0.8';
         $this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
         $this->picto = 'product';
         
@@ -62,12 +62,12 @@ class modMyProductsModule extends DolibarrModules
             'target'   => '',
             'user'     => 0
         );
-        
+
         $this->menu[3] = array(
             'fk_menu'  => 'fk_mainmenu=products,fk_leftmenu=myproductsmodule',
             'type'     => 'left',
-            'titre'    => 'ProductMargins',
-            'url'      => '/myproductsmodule/include/margins.php',
+            'titre'    => 'LowMarginProducts',
+            'url'      => '/myproductsmodule/include/low_margin.php',
             'langs'    => 'myproductsmodule@myproductsmodule',
             'position' => 103,
             'enabled'  => '1',

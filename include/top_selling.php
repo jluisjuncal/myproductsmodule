@@ -15,12 +15,13 @@ $sortfield = GETPOST('sortfield', 'aZ09comma');
 $sortorder = GETPOST('sortorder', 'aZ09comma');
 $category = GETPOST('category', 'int');
 $status = GETPOST('status', 'int');
-$date_start = GETPOST('date_start', 'alpha');
-$date_end = GETPOST('date_end', 'alpha');
+$date_start = dol_mktime(0, 0, 0, GETPOST('date_startmonth', 'int'), GETPOST('date_startday', 'int'), GETPOST('date_startyear', 'int'));
+$date_end = dol_mktime(23, 59, 59, GETPOST('date_endmonth', 'int'), GETPOST('date_endday', 'int'), GETPOST('date_endyear', 'int'));
 
 if (!$sortfield) $sortfield = 'total_qty';
 if (!$sortorder) $sortorder = 'DESC';
-if (!$date_end) $date_end = dol_print_date(dol_now(), '%Y-%m-%d');
+if (empty($date_end)) $date_end = dol_now();
+if (empty($date_start)) $date_start = dol_time_plus_duree($date_end, -1, 'y');
 
 $title = $langs->trans("TopSellingProducts");
 
@@ -69,34 +70,42 @@ print '</form>';
 
 // Build SQL Query
 $sql = "SELECT p.ref, p.label, p.description, p.tosell, ";
-$sql.= "COALESCE(SUM(fd.qty), 0) as total_qty, ";
-$sql.= "COALESCE(SUM(fd.total_ht), 0) as total_amount ";
-$sql.= "FROM ".MAIN_DB_PREFIX."product as p ";
-$sql.= "LEFT JOIN ".MAIN_DB_PREFIX."facturedet as fd ON fd.fk_product = p.rowid ";
+$sql.= "(SELECT SUM(fd.qty) FROM ".MAIN_DB_PREFIX."facturedet as fd ";
 $sql.= "LEFT JOIN ".MAIN_DB_PREFIX."facture as f ON f.rowid = fd.fk_facture ";
-
-// Category filter
-if ($category > 0) {
-    $sql.= "LEFT JOIN ".MAIN_DB_PREFIX."categorie_product as cp ON cp.fk_product = p.rowid ";
-}
-
-$sql.= "WHERE 1=1 ";
-
-if ($status >= 0) {
-    $sql.= "AND p.tosell = " . $status . " ";
-}
-if ($category > 0) {
-    $sql.= "AND cp.fk_categorie = " . $category . " ";
-}
+$sql.= "WHERE fd.fk_product = p.rowid ";
 if ($date_start) {
     $sql.= "AND f.datef >= '".$db->idate($date_start)."' ";
 }
 if ($date_end) {
     $sql.= "AND f.datef <= '".$db->idate($date_end)."' ";
 }
+$sql.= ") as total_qty, ";
+$sql.= "(SELECT SUM(fd.total_ht) FROM ".MAIN_DB_PREFIX."facturedet as fd ";
+$sql.= "LEFT JOIN ".MAIN_DB_PREFIX."facture as f ON f.rowid = fd.fk_facture ";
+$sql.= "WHERE fd.fk_product = p.rowid ";
+if ($date_start) {
+    $sql.= "AND f.datef >= '".$db->idate($date_start)."' ";
+}
+if ($date_end) {
+    $sql.= "AND f.datef <= '".$db->idate($date_end)."' ";
+}
+$sql.= ") as total_amount ";
+$sql.= "FROM ".MAIN_DB_PREFIX."product as p ";
+
+// Category filter
+if ($category > 0) {
+    $sql.= "LEFT JOIN ".MAIN_DB_PREFIX."categorie_product as cp ON cp.fk_product = p.rowid ";
+    $sql.= "WHERE cp.fk_categorie = " . $category . " ";
+} else {
+    $sql.= "WHERE 1=1 ";
+}
+
+if ($status >= 0) {
+    $sql.= "AND p.tosell = " . $status . " ";
+}
 
 $sql.= "GROUP BY p.rowid, p.ref, p.label, p.description, p.tosell ";
-$sql.= "ORDER BY " . $sortfield . " " . $sortorder;
+$sql.= "ORDER BY " . ($sortfield == 'total_qty' ? 'IFNULL(total_qty, 0)' : $sortfield) . " " . $sortorder;
 $sql.= " LIMIT " . $limit;
 
 $resql = $db->query($sql);
@@ -109,12 +118,16 @@ if ($resql) {
     print_liste_field_titre("TotalHT", $_SERVER["PHP_SELF"], "total_amount", "", "", 'class="right"', $sortfield, $sortorder);
     print '</tr>';
 
+    if ($db->num_rows($resql) == 0) {
+        print '<tr><td colspan="4" class="opacitymedium">'.$langs->trans("NoRecordFound").'</td></tr>';
+    }
+
     while ($obj = $db->fetch_object($resql)) {
         print '<tr class="oddeven">';
         print '<td>'.$obj->ref.'</td>';
         print '<td>'.$obj->label.'</td>';
-        print '<td class="right">'.price($obj->total_qty).'</td>';
-        print '<td class="right">'.price($obj->total_amount).'</td>';
+        print '<td class="right">'.price($obj->total_qty ? $obj->total_qty : 0).'</td>';
+        print '<td class="right">'.price($obj->total_amount ? $obj->total_amount : 0).'</td>';
         print '</tr>';
     }
     print '</table>';
